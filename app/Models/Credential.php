@@ -48,4 +48,28 @@ class Credential extends Model
     {
         return $this->belongsTo(Profile::class, 'owner_profile_id');
     }
+
+    /**
+     * Get the profile who created the credential.
+     */
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(Profile::class, 'created_by');
+    }
+
+    /**
+     * Get the profile who last updated the credential.
+     */
+    public function updatedBy(): BelongsTo
+    {
+        return $this->belongsTo(Profile::class, 'updated_by');
+    }
+
+    /**
+     * Get the profile who deleted the credential.
+     */
+    public function deletedBy(): BelongsTo
+    {
+        return $this->belongsTo(Profile::class, 'deleted_by');
+    }
 }

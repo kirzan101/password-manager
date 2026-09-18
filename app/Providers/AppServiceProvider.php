@@ -52,8 +52,12 @@ class AppServiceProvider extends ServiceProvider
 
         // APP modules start
 
+        // Credential
         $this->app->bind(\App\Interfaces\CredentialInterface::class, \App\Services\CredentialService::class);
         $this->app->bind(\App\Interfaces\FetchInterfaces\CredentialFetchInterface::class, \App\Services\FetchServices\CredentialFetchService::class);
+
+        // Credential Access
+        $this->app->bind(\App\Interfaces\CredentialAccessInterface::class, \App\Services\CredentialAccessService::class);
 
         // APP modules end
     }
