@@ -49,6 +49,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Interfaces\ModuleInterface::class, \App\Services\ModuleService::class);
         $this->app->bind(\App\Interfaces\FetchInterfaces\ModuleFetchInterface::class, \App\Services\FetchServices\ModuleFetchService::class);
         $this->app->bind(\App\Interfaces\ActivityLoggerInterface::class, \App\Services\ActivityLoggerService::class);
+
+        // APP modules start
+
+        $this->app->bind(\App\Interfaces\CredentialInterface::class, \App\Services\CredentialService::class);
+        $this->app->bind(\App\Interfaces\FetchInterfaces\CredentialFetchInterface::class, \App\Services\FetchServices\CredentialFetchService::class);
+
+        // APP modules end
     }
 
     /**

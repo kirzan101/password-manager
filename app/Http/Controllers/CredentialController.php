@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\DTOs\{{ base }}DTO;
-use App\Http\Requests\{{ base }}FormRequest;
+use App\DTOs\CredentialDTO;
+use App\Http\Requests\CredentialFormRequest;
 use App\Interfaces\ActivityLoggerInterface;
-use App\Interfaces\{{ base }}Interface;
-use App\Models\{{ base }};
+use App\Interfaces\CredentialInterface;
+use App\Models\Credential;
 use App\Traits\ReturnMessageTrait;
 use App\Traits\ReturnModulePermissionTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -15,47 +15,47 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class {{ base }}Controller extends Controller
+class CredentialController extends Controller
 {
     use ReturnMessageTrait;
 
     public function __construct(
-        private {{ base }}Interface ${{ variable }},
+        private CredentialInterface $credential,
         private ActivityLoggerInterface $activityLogger
     ) {}
 
-    const MODULE_NAME = '{{ module }}';
+    const MODULE_NAME = 'credentials';
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (Gate::denies('view', new {{ base }}())) {
+        if (Gate::denies('view', new Credential())) {
             return Inertia::render('Error', [
                 'code' => 403,
                 'message' => 'You do not have permission to view this page.'
             ]);
         }
 
-        return Inertia::render('App/{{ basePlural }}', []);
+        return Inertia::render('App/Credentials', []);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store({{ base }}FormRequest $request)
+    public function store(CredentialFormRequest $request)
     {
         // Verify if the current user has permission to create
-        if (Gate::denies('create', new {{ base }}())) {
+        if (Gate::denies('create', new Credential())) {
             return Inertia::render('Error', [
                 'code' => 403,
-                'message' => 'You do not have permission to create this {{ variable }}.'
+                'message' => 'You do not have permission to create this credential.'
             ]);
         }
 
-        ${{ variable }}DTO = {{ base }}DTO::fromRequest($request);
-        $result = $this->{{ variable }}->store{{ base }}(${{ variable }}DTO);
+        $credentialDTO = CredentialDTO::fromRequest($request);
+        $result = $this->credential->storeCredential($credentialDTO);
 
         // Log the activity
         $this->activityLogger->addLog($result, $request, self::MODULE_NAME, 'store');
@@ -66,18 +66,18 @@ class {{ base }}Controller extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update({{ base }}FormRequest $request, int $id)
+    public function update(CredentialFormRequest $request, int $id)
     {
         // Verify if the current user has permission to update
-        if (Gate::denies('update', new {{ base }}())) {
+        if (Gate::denies('update', new Credential())) {
             return Inertia::render('Error', [
                 'code' => 403,
-                'message' => 'You do not have permission to update this {{ variable }}.'
+                'message' => 'You do not have permission to update this credential.'
             ]);
         }
 
-        ${{ variable }}DTO = {{ base }}DTO::fromRequest($request);
-        $result = $this->{{ variable }}->update{{ base }}(${{ variable }}DTO, $id);
+        $credentialDTO = CredentialDTO::fromRequest($request);
+        $result = $this->credential->updateCredential($credentialDTO, $id);
 
         // Log the activity
         $this->activityLogger->addLog($result, $request, self::MODULE_NAME, 'update');
@@ -91,14 +91,14 @@ class {{ base }}Controller extends Controller
     public function destroy(int $id)
     {
         // Verify if the current user has permission to delete
-        if (Gate::denies('delete', new {{ base }}())) {
+        if (Gate::denies('delete', new Credential())) {
             return Inertia::render('Error', [
                 'code' => 403,
-                'message' => 'You do not have permission to delete this {{ variable }}.'
+                'message' => 'You do not have permission to delete this credential.'
             ]);
         }
 
-        $result = $this->{{ variable }}->delete{{ base }}($id);
+        $result = $this->credential->deleteCredential($id);
 
         // Clone the current HTTP request to avoid modifying the original request object,
         // then add (merge) the 'id' parameter into the cloned request.
@@ -107,7 +107,7 @@ class {{ base }}Controller extends Controller
 
         // Log the activity
         $this->activityLogger->addLog($result, $request, self::MODULE_NAME, 'delete');
-        
+
         return $this->returnMessage($result);
     }
 }
