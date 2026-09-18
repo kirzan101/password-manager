@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Interfaces\FetchInterfaces;
+
+use App\Data\PaginateResponse;
+use App\Data\CollectionResponse;
+use App\Data\ModelResponse;
+
+interface {{ base }}FetchInterface
+{
+    /**
+     * Fetch a list of {{ description }} with optional search functionality.
+     *
+     * @param array $request Optional parameters for filtering or pagination.
+     * @param bool $isPaginated Whether to paginate the results.
+     * @param class-string<\Illuminate\Http\Resources\Json\JsonResource>|null $resourceClass The resource class to transform the results.
+     * @return PaginateResponse|CollectionResponse A response containing the list of {{ descriptionPlural }}, either paginated or as a collection.
+     */
+    public function index{{ basePlural }}(array $request = [], bool $isPaginated = false, ?string $resourceClass = null): PaginateResponse|CollectionResponse;
+
+    /**
+     * Fetch a single {{ description }} by ID.
+     *
+     * @param integer ${{ variable }}Id
+     * @param class-string<\Illuminate\Http\Resources\Json\JsonResource>|null $resourceClass
+     * @return ModelResponse A model response containing the {{ description }}.
+     */
+    public function show{{ base }}(int ${{ variable }}Id, ?string $resourceClass = null): ModelResponse;
+}

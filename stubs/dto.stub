@@ -1,0 +1,15 @@
+<?php
+
+namespace App\DTOs;
+
+class {{ dto }} extends BaseDTO
+{
+    /**
+     * Create a new {{ dto }} instance.
+     */
+    public function __construct(
+        ?int $id = null
+    ) {
+        parent::__construct($id);
+    }
+}

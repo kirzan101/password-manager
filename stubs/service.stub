@@ -1,0 +1,128 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Data\ModelResponse;
+use App\DTOs\{{ dto }};
+use App\Helpers\Helper;
+use App\Interfaces\{{ interface }};
+use App\Traits\HttpErrorCodeTrait;
+use App\Traits\ReturnModelCollectionTrait;
+use App\Traits\ReturnModelTrait;
+use App\Interfaces\CurrentUserInterface;
+use App\Interfaces\BaseInterface;
+use App\Interfaces\FetchInterfaces\BaseFetchInterface;
+use App\Traits\CheckIfColumnExistsTrait;
+use App\Traits\DetectsSoftDeletesTrait;
+use App\Traits\EnsureDataTrait;
+use App\Traits\EnsureSuccessTrait;
+use Illuminate\Support\Facades\DB;
+use App\Models\{{ base }};
+
+class {{ class }} implements {{ interface }}
+{
+    use HttpErrorCodeTrait,
+        ReturnModelCollectionTrait,
+        ReturnModelTrait,
+        DetectsSoftDeletesTrait,
+        CheckIfColumnExistsTrait,
+        EnsureSuccessTrait,
+        EnsureDataTrait;
+
+    public function __construct(
+        private BaseInterface $base,
+        private BaseFetchInterface $fetch,
+        private CurrentUserInterface $currentUser
+    ) {}
+
+    /**
+     * Store a new {{ description }} in the database.
+     *
+     * @param {{ dto }} ${{ dtoVariable }}
+     * @return ModelResponse
+     */
+    public function store{{ base }}({{ dto }} ${{ dtoVariable }}): ModelResponse
+    {
+        try {
+            return DB::transaction(function () use (${{ dtoVariable }}) {
+
+                // Uncomment if there is an created_by and updated_by column in the model
+                // $currentUserProfileId = $this->currentUser->getProfileId(); // current logged in profile
+                // if ($this->modelHasColumns({{ base }}::class, ['created_by', 'updated_by'])) {
+                //     ${{ dtoVariable }} = ${{ dtoVariable }}->withDefaultAudit($currentUserProfileId);
+                // }
+
+                ${{ variable }}Data = ${{ dtoVariable }}->toArray();
+                ${{ variable }} = $this->base->store({{ base }}::class, ${{ variable }}Data);
+
+                return ModelResponse::success(201, Helper::SUCCESS, '{{ readable }} created successfully!', ${{ variable }}, ${{ variable }}->id);
+            });
+        } catch (\Throwable $th) {
+            $code = $this->httpCode($th);
+            return ModelResponse::error($code, Helper::ERROR, $th->getMessage());
+        }
+    }
+
+    /**
+     * Update an existing {{ description }} in the database.
+     *
+     * @param {{ dto }} ${{ dtoVariable }}
+     * @param int ${{ variable }}Id
+     * @return ModelResponse
+     */
+    public function update{{ base }}({{ dto }} ${{ dtoVariable }}, int ${{ variable }}Id): ModelResponse
+    {
+        try {
+            return DB::transaction(function () use (${{ dtoVariable }}, ${{ variable }}Id) {
+                ${{ variable }} = $this->fetch->showQuery({{ base }}::class, ${{ variable }}Id)->firstOrFail();
+
+                ${{ dtoVariable }} = {{ dto }}::fromModel(${{ variable }}, ${{ dtoVariable }}->toArray());
+
+                // Uncomment if there is an updated_by column in the model
+                // $currentUserProfileId = $this->currentUser->getProfileId(); // current logged in profile
+                // if ($this->modelHasColumn(${{ variable }}, 'updated_by')) {
+                //     ${{ dtoVariable }} = ${{ dtoVariable }}->touchUpdatedBy($currentUserProfileId);
+                // }
+
+                ${{ variable }}Data = ${{ dtoVariable }}->toArray();
+                ${{ variable }} = $this->base->update(${{ variable }}, ${{ variable }}Data);
+
+                return ModelResponse::success(200, Helper::SUCCESS, '{{ readable }} updated successfully!', ${{ variable }}, ${{ variable }}Id);
+            });
+        } catch (\Throwable $th) {
+            $code = $this->httpCode($th);
+            return ModelResponse::error($code, Helper::ERROR, $th->getMessage());
+        }
+    }
+
+    /**
+     * Delete the given {{ description }} in the database.
+     *
+     * @param int ${{ variable }}Id
+     * @return ModelResponse
+     */
+    public function delete{{ base }}(int ${{ variable }}Id): ModelResponse
+    {
+        try {
+            return DB::transaction(function () use (${{ variable }}Id) {
+                ${{ variable }} = $this->fetch->showQuery({{ base }}::class, ${{ variable }}Id)->firstOrFail();
+
+                if ($this->modelUsesSoftDeletes(${{ variable }})) {
+                    if ($this->modelHasColumn(${{ variable }}, 'updated_by')) {
+                        // record who deleted the activity log
+                        $this->base->update(${{ variable }}, [
+                            'updated_by' => $this->currentUser->getProfileId(),
+                        ]);
+                    }
+                }
+
+                $this->base->delete(${{ variable }});
+
+                return ModelResponse::success(204, Helper::SUCCESS, '{{ readable }} deleted successfully!', null, ${{ variable }}Id);
+            });
+        } catch (\Throwable $th) {
+            $code = $this->httpCode($th);
+            return ModelResponse::error($code, Helper::ERROR, $th->getMessage());
+        }
+    }
+}

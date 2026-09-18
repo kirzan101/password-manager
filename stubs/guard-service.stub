@@ -1,0 +1,44 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Helpers\Helper;
+use App\Interfaces\GuardInterfaces\{{ interface }};
+use App\Traits\HttpErrorCodeTrait;
+use App\Interfaces\CurrentUserInterface;
+use App\Interfaces\BaseInterface;
+use App\Interfaces\FetchInterfaces\BaseFetchInterface;
+use App\Traits\CheckIfColumnExistsTrait;
+use App\Traits\EnsureDataTrait;
+use App\Traits\EnsureSuccessTrait;
+use Illuminate\Support\Facades\DB;
+use App\Models\{{ base }};
+
+class {{ class }} implements {{ interface }}
+{
+    use HttpErrorCodeTrait,
+        CheckIfColumnExistsTrait,
+        EnsureSuccessTrait,
+        EnsureDataTrait;
+
+    public function __construct(
+        private BaseInterface $base,
+        private BaseFetchInterface $fetch,
+        private CurrentUserInterface $currentUser
+    ) {}
+
+    /**
+     * Check if {{ description }} is able to delete.
+     *
+     * @param int ${{ variable }}Id
+     * @return void
+     */
+    public function isAbleToDelete{{ base }}(int ${{ variable }}Id): void
+    {
+        $isExists = $this->fetch->showQuery({{ base }}::class, ${{ variable }}Id)->exists();
+
+        if(!$isExists) {
+            throw new \Exception('Details not found.', 404);
+        }
+    }
+}

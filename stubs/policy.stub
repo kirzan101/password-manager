@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Policies;
+
+use App\Helpers\Helper;
+use App\Models\User;
+use App\Models\{{ base }};
+
+class {{ base }}Policy extends BasePolicy
+{
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, {{ base }} ${{ variable }}): bool
+    {
+        return $this->canDo($user, Helper::ACTION_TYPE_VIEW, ${{ variable }});
+    }
+
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
+    {
+        return $this->canDo($user, Helper::ACTION_TYPE_CREATE, {{ base }}::class);
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, {{ base }} ${{ variable }}): bool
+    {
+        return $this->canDo($user, Helper::ACTION_TYPE_UPDATE, ${{ variable }});
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, {{ base }} ${{ variable }}): bool
+    {
+        return $this->canDo($user, Helper::ACTION_TYPE_DELETE, ${{ variable }});
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, {{ base }} ${{ variable }}): bool
+    {
+        return $this->canDo($user, Helper::ACTION_TYPE_RESTORE, ${{ variable }});
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user, {{ base }} ${{ variable }}): bool
+    {
+        return $this->canDo($user, Helper::ACTION_TYPE_DELETE, ${{ variable }});
+    }
+}
