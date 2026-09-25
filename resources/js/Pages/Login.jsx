@@ -23,6 +23,8 @@ const Login = ({ flash, errors }) => {
     const appDeveloper = page.props.appDeveloper || "Developer";
     const appVersion = page.props.appVersion || "1.0.0";
 
+    console.log(page.props.appName);
+
     const [btnDisabled, setBtnDisabled] = useState(false);
     const [form, setForm] = useState({
         username: "",
@@ -78,17 +80,15 @@ const Login = ({ flash, errors }) => {
                         }}
                     >
                         <Typography variant="h3" fontWeight="bold">
-                            Laravel React App
+                            {appName}
                         </Typography>
 
                         <Typography variant="h5" sx={{ mt: 2 }}>
-                            Subtitle or tagline goes here
+                            Welcome to {appName}. Please log in to continue.
                         </Typography>
 
                         <Typography variant="body2" sx={{ mt: 3 }}>
-                            Optional description or welcome message can be
-                            placed here to provide additional context or
-                            instructions to the user.
+                            Manage your passwords securely.
                         </Typography>
                     </Box>
                 </Grid>
