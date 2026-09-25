@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Grid, Box, Typography, CircularProgress } from "@mui/material";
+import { Grid, Box, Typography, CircularProgress, Grow } from "@mui/material";
 import ModuleCard from "./Cards/ModuleCard";
 import EmptyResult from "@/Components/Utilities/EmptyResult";
 
@@ -93,23 +93,43 @@ const PermissionContent = ({ flash, errors, can, permissionsByModule }) => {
                     </Grid>
                 ) : Object.keys(filteredPermissionsByModule).length > 0 ? (
                     Object.entries(filteredPermissionsByModule).map(
-                        ([moduleName, permissions]) => (
+                        ([moduleName, permissions], index) => (
                             <Grid
                                 key={moduleName}
                                 size={{
                                     xs: 12,
                                     sm: 6,
-                                    md: 4,
-                                    lg: 3,
+                                    md: 6,
+                                    lg: 4,
+                                    xl: 3,
+                                    xxl: 2,
                                 }}
                             >
-                                <ModuleCard
+                                {/* <ModuleCard
                                     moduleName={moduleName}
                                     permissions={permissions}
                                     flash={flash}
                                     errors={errors}
                                     can={can}
-                                />
+                                /> */}
+
+                                <Grow
+                                    in
+                                    timeout={300 + index * 75}
+                                    style={{
+                                        transformOrigin: "0 0 0",
+                                    }}
+                                >
+                                    <div>
+                                        <ModuleCard
+                                            moduleName={moduleName}
+                                            permissions={permissions}
+                                            flash={flash}
+                                            errors={errors}
+                                            can={can}
+                                        />
+                                    </div>
+                                </Grow>
                             </Grid>
                         ),
                     )
