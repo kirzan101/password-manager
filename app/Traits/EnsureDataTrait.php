@@ -76,4 +76,21 @@ trait EnsureDataTrait
             throw new RuntimeException($message);
         }
     }
+
+    /**
+     * Ensure that the given value is not null.
+     *
+     * @param mixed $data The value to check.
+     * @param string|null $fallbackMessage The message to use if validation fails.
+     *
+     * @throws RuntimeException If the value is null.
+     */
+    protected function ensureNotNull(mixed $data, ?string $fallbackMessage = null): void
+    {
+        if ($data === null) {
+            $message = $fallbackMessage ?? 'Value cannot be null';
+
+            throw new RuntimeException($message);
+        }
+    }
 }

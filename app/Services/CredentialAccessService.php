@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Data\ModelResponse;
+use App\Data\StandardResponse;
 use App\DTOs\CredentialAccessDTO;
 use App\Helpers\Helper;
 use App\Interfaces\CredentialAccessInterface;
@@ -121,6 +122,68 @@ class CredentialAccessService implements CredentialAccessInterface
         } catch (\Throwable $th) {
             $code = $this->httpCode($th);
             return ModelResponse::error($code, Helper::ERROR, $th->getMessage());
+        }
+    }
+
+    /**
+     * Store multiple credential accesses in the database.
+     *
+     * @param array $credentialAccessDTOs
+     * @return StandardResponse
+     */
+    public function storeMultipleCredentialAccess(array $credentialAccessDTOs): StandardResponse
+    {
+        try {
+            return DB::transaction(function () use ($credentialAccessDTOs) {
+                $forStoringAccesses = [];
+                foreach ($credentialAccessDTOs as $credentialAccessDTO) {
+                    // ensure is instance of CredentialAccessDTO
+                    if (!($credentialAccessDTO instanceof \App\DTOs\CredentialAccessDTO)) {
+                        throw new \RuntimeException('Invalid credential access DTO provided', 400);
+                    }
+
+                    $forStoringAccesses[] = $credentialAccessDTO->toArray();
+                }
+
+                $isSuccess = $this->base->storeMultiple(CredentialAccess::class, $forStoringAccesses);
+
+                if (!$isSuccess) {
+                    throw new \RuntimeException('Failed to store multiple credential accesses', 500);
+                }
+
+                return StandardResponse::success(201, Helper::SUCCESS, 'Multiple credential accesses created successfully!');
+            });
+        } catch (\Throwable $th) {
+            $code = $this->httpCode($th);
+            return StandardResponse::error($code, Helper::ERROR, $th->getMessage());
+        }
+    }
+
+    /**
+     * Update the access level for a specific credential access in the database.
+     *
+     * @param int $credentialAccessId
+     * @param string $newAccessLevel
+     * @return StandardResponse
+     */
+    public function updateCredentialAccessLevel(int $credentialAccessId, string $newAccessLevel): StandardResponse
+    {
+        try {
+            return DB::transaction(function () use ($credentialAccessId, $newAccessLevel) {
+                $response = $this->fetch->showQuery(CredentialAccess::class, $credentialAccessId)->firstOrFail();
+
+                if ($this->modelHasColumn($response, 'access_level')) {
+                    $this->base->update($response, [
+                        'access_level' => $newAccessLevel,
+                        'updated_by' => $this->currentUser->getProfileId(),
+                    ]);
+                }
+
+                return StandardResponse::success(200, Helper::SUCCESS, 'Access level updated for credential successfully!', $response);
+            });
+        } catch (\Throwable $th) {
+            $code = $this->httpCode($th);
+            return StandardResponse::error($code, Helper::ERROR, $th->getMessage());
         }
     }
 }

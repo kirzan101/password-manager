@@ -3,6 +3,7 @@
 namespace App\Interfaces;
 
 use App\Data\ModelResponse;
+use App\Data\StandardResponse;
 use App\DTOs\CredentialAccessDTO;
 
 interface CredentialAccessInterface
@@ -31,4 +32,21 @@ interface CredentialAccessInterface
      * @return ModelResponse
      */
     public function deleteCredentialAccess(int $credentialAccessId): ModelResponse;
+
+    /**
+     * Store multiple credential accesses in the database.
+     *
+     * @param array $credentialAccessDTOs
+     * @return StandardResponse
+     */
+    public function storeMultipleCredentialAccess(array $credentialAccessDTOs): StandardResponse;
+
+    /**
+     * Update the access level for a specific credential access in the database.
+     *
+     * @param int $credentialAccessId
+     * @param string $newAccessLevel
+     * @return StandardResponse
+     */
+    public function updateCredentialAccessLevel(int $credentialAccessId, string $newAccessLevel): StandardResponse;
 }

@@ -105,7 +105,7 @@ class CredentialService implements CredentialInterface
             return DB::transaction(function () use ($credentialId) {
                 $credential = $this->fetch->showQuery(Credential::class, $credentialId)->firstOrFail();
 
-                // record who deleted the activity log
+                // record who deleted the actual credential
                 $this->base->update($credential, [
                     'updated_by' => $this->currentUser->getProfileId(),
                     'deleted_by' => $this->currentUser->getProfileId()

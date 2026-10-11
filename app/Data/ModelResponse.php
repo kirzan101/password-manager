@@ -73,4 +73,20 @@ class ModelResponse extends BaseResponse
             'data' => $this->data,
         ]);
     }
+
+    /**
+     * Get the model instance.
+     */
+    public function getData(): ?Model
+    {
+        return $this->data;
+    }
+
+    /**
+     * Get the ID of the last created or updated model.
+     */
+    public function getLastId(): ?int
+    {
+        return $this->lastId;
+    }
 }

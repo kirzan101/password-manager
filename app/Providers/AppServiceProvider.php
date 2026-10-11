@@ -59,6 +59,9 @@ class AppServiceProvider extends ServiceProvider
         // Credential Access
         $this->app->bind(\App\Interfaces\CredentialAccessInterface::class, \App\Services\CredentialAccessService::class);
 
+        // Manage Credential
+        $this->app->bind(\App\Interfaces\ManageCredentialInterface::class, \App\Services\ManageCredentialService::class);
+
         // APP modules end
     }
 
