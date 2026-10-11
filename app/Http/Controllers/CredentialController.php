@@ -38,7 +38,7 @@ class CredentialController extends Controller
             ]);
         }
 
-        return Inertia::render('App/Credentials', []);
+        return Inertia::render('System/Credentials', []);
     }
 
     /**

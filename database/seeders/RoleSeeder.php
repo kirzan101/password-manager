@@ -50,13 +50,19 @@ class RoleSeeder extends Seeder
                         'view',
                         'update',
                         'delete'
-                    ]
+                    ],
                     // 'modules' => [
                     //     'create',
                     //     'view',
                     //     'update',
                     //     'delete',
                     // ],
+                    'credentials' => [
+                        'create',
+                        'view',
+                        'update',
+                        'delete'
+                    ]
                 ], // Example permissions
             ],
             [

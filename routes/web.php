@@ -38,6 +38,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('activity-logs', [\App\Http\Controllers\System\ActivityLogController::class, 'index'])->name('activity-logs.index');
     });
 
+    Route::resource('credentials', \App\Http\Controllers\CredentialController::class)->only(['index', 'store', 'update', 'destroy']);
+
     // Route to serve uploaded files from the private disk
     Route::get('/uploads/{path}', function (string $path) {
         $disk = \Illuminate\Support\Facades\Storage::disk('private');

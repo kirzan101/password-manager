@@ -16,11 +16,12 @@ return new class extends Migration
             $table->foreignId('owner_profile_id')->constrained('profiles');
             $table->string('name');
             $table->string('username');
-            $table->string('secret');
+            $table->text('secret');
             $table->string('category')->nullable();
             $table->json('properties')->nullable();
             $table->boolean('is_favorite')->default(false);
             $table->text('notes')->nullable();
+            $table->text('encryption_key_id')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('profiles');
             $table->foreignId('updated_by')->nullable()->constrained('profiles');
             $table->foreignId('deleted_by')->nullable()->constrained('profiles');

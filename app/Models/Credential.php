@@ -35,9 +35,22 @@ class Credential extends Model
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'is_favorite' => 'boolean',
-        'properties' => 'array',
+    protected function casts(): array
+    {
+        return [
+            'secret' => \App\Casts\EncryptedCredentialSecret::class,
+            'properties' => 'array',
+            'is_favorite' => 'boolean',
+        ];
+    }
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'secret',
     ];
 
     /**
@@ -52,6 +65,8 @@ class Credential extends Model
 
     /**
      * Get the profile who created the credential.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function createdBy(): BelongsTo
     {
@@ -60,6 +75,8 @@ class Credential extends Model
 
     /**
      * Get the profile who last updated the credential.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function updatedBy(): BelongsTo
     {
@@ -68,6 +85,8 @@ class Credential extends Model
 
     /**
      * Get the profile who deleted the credential.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function deletedBy(): BelongsTo
     {
@@ -76,6 +95,8 @@ class Credential extends Model
 
     /**
      * Get the credential accesses for the credential.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function credentialAccesses(): HasMany
     {

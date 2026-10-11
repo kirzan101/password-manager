@@ -11,6 +11,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/activity-logs', [\App\Http\Controllers\API\System\ActivityLogApiController::class, 'index']);
     Route::get('/permissions', [\App\Http\Controllers\API\System\PermissionApiController::class, 'index']);
 
+    // app
+    Route::get('/credentials', [\App\Http\Controllers\API\CredentialApiController::class, 'index']);
+
     // search
     Route::get('/user-groups/search', [\App\Http\Controllers\API\System\UserGroupApiController::class, 'searchIndex']);
     Route::get('/roles/search', [\App\Http\Controllers\API\System\RoleApiController::class, 'searchIndex']);

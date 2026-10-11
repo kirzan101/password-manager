@@ -20,7 +20,8 @@ import SecurityIcon from "@mui/icons-material/Security";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from "@mui/icons-material/Lock";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 
 export const iconMap = {
     DashboardIcon,
@@ -46,4 +47,5 @@ export const iconMap = {
     CancelOutlinedIcon,
     DeleteIcon,
     LockIcon,
+    VpnKeyIcon,
 };

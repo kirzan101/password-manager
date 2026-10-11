@@ -184,6 +184,19 @@ class ManageCredentialService implements ManageCredentialInterface
     }
 
     /**
+     * Reveal the secret for a specific credential.
+     *
+     * @param int $credentialId
+     * @return string|null
+     */
+    public function revealCredentialSecret(int $credentialId): ?string
+    {
+        $credential = $this->fetch->showQuery(\App\Models\Credential::class, $credentialId)->firstOrFail();
+
+        return $credential->secret;
+    }
+
+    /**
      * Process a ManageCredentialDTO into a CredentialDTO.
      */
     protected function processCredentialDTO(ManageCredentialDTO $manageCredentialDTO): \App\DTOs\CredentialDTO

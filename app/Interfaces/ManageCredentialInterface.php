@@ -57,4 +57,12 @@ interface ManageCredentialInterface
      * @return StandardResponse
      */
     public function updateAccessLevelToCredential(int $credentialAccessId, string $newAccessLevel): StandardResponse;
+
+    /**
+     * Reveal the secret for a specific credential.
+     *
+     * @param int $credentialId
+     * @return string|null
+     */
+    public function revealCredentialSecret(int $credentialId): ?string;
 }

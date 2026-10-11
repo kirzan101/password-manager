@@ -18,45 +18,52 @@ class PermissionSeeder extends Seeder
     {
         $permissions = [
             [
+                'module' => 'credentials',
+                'icon' => 'VpnKeyIcon',
+                'types' => ['create', 'view', 'update', 'delete'],
+                'order' => 1,
+                'category' => null,
+            ],
+            [
                 'module' => 'users',
                 'icon' => 'PeopleIcon',
                 'types' => ['create', 'view', 'update', 'delete', 'reset', 'set-status', 'set-avatar'],
-                'order' => 1,
+                'order' => 2,
                 'category' => null,
             ],
             [
                 'module' => 'activity_logs',
                 'icon' => 'HistoryIcon',
                 'types' => ['view'], // only view permission for activity logs
-                'order' => 2,
+                'order' => 3,
                 'category' => null,
             ],
             [
                 'module' => 'user_groups',
                 'icon' => 'GroupsIcon',
                 'types' => ['create', 'view', 'update', 'delete'],
-                'order' => 3,
+                'order' => 4,
                 'category' => Helper::MODULE_CATEGORY_SETTINGS,
             ],
             [
                 'module' => 'roles',
                 'icon' => 'RoleIcon',
                 'types' => ['create', 'view', 'update', 'delete'],
-                'order' => 4,
+                'order' => 5,
                 'category' => Helper::MODULE_CATEGORY_SETTINGS,
             ],
             [
                 'module' => 'permissions',
                 'icon' => 'SecurityIcon',
                 'types' => ['create', 'view', 'update', 'delete'],
-                'order' => 5,
+                'order' => 6,
                 'category' => Helper::MODULE_CATEGORY_SETTINGS,
             ],
             // [
             //     'module' => 'modules',
             //     'icon' => 'ViewModuleIcon',
             //     'types' => ['create', 'view', 'update', 'delete'],
-            //     'order' => 6,
+            //     'order' => 7,
             //     'category' => Helper::MODULE_CATEGORY_SETTINGS,
             // ],
         ];

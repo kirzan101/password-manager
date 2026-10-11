@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use RuntimeException;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,6 +14,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // register the credentials encrypter singleton
+        $this->app->singleton(
+            'credentials.encrypter',
+            function () {
+                $encodedKey = config('credentials.encryption_key');
+
+                if (! is_string($encodedKey) || $encodedKey === '') {
+                    throw new RuntimeException('Credential encryption key is not configured.');
+                }
+
+                $key = base64_decode($encodedKey, true);
+
+                if ($key === false || strlen($key) !== 32) {
+                    throw new RuntimeException('Credential encryption key must be valid base64 encoding of 32 bytes.');
+                }
+
+                return new Encrypter($key, 'AES-256-CBC');
+            }
+        );
+
         // register Telescope service provider if in local environment
         if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
