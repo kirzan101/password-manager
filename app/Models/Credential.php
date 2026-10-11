@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Credential extends Model
@@ -71,5 +72,13 @@ class Credential extends Model
     public function deletedBy(): BelongsTo
     {
         return $this->belongsTo(Profile::class, 'deleted_by');
+    }
+
+    /**
+     * Get the credential accesses for the credential.
+     */
+    public function credentialAccesses(): HasMany
+    {
+        return $this->hasMany(CredentialAccess::class, 'credential_id');
     }
 }

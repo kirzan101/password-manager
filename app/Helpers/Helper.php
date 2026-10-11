@@ -189,4 +189,16 @@ class Helper
         // Add more categories as needed
     ];
     const MODULE_CATEGORY_SETTINGS = 'settings';
+
+    /**
+     * credential access levels
+     */
+    const CREDENTIAL_ACCESS_LEVELS = [
+        'viewer', // can only view the credential
+        'editor', // can view and edit the credential
+        'moderator' // can manage the credential, including changing access levels
+    ];
+    const CREDENTIAL_ACCESS_LEVEL_VIEWER = 'viewer';        // 3
+    const CREDENTIAL_ACCESS_LEVEL_EDITOR = 'editor';        // 2 
+    const CREDENTIAL_ACCESS_LEVEL_MODERATOR = 'moderator';  // 1 highest
 }
