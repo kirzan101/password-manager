@@ -17,4 +17,6 @@ Route::middleware(['web', 'auth'])->group(function () {
     // search
     Route::get('/user-groups/search', [\App\Http\Controllers\API\System\UserGroupApiController::class, 'searchIndex']);
     Route::get('/roles/search', [\App\Http\Controllers\API\System\RoleApiController::class, 'searchIndex']);
+
+    Route::post('/credentials/{credentialId}/reveal', [\App\Http\Controllers\API\CredentialApiController::class, 'reveal']);
 });

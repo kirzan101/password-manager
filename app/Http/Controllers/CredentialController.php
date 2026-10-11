@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\CredentialDTO;
+use App\DTOs\ManageCredentialDTO;
 use App\Http\Requests\CredentialFormRequest;
 use App\Interfaces\ActivityLoggerInterface;
 use App\Interfaces\CredentialInterface;
+use App\Interfaces\CurrentUserInterface;
+use App\Interfaces\ManageCredentialInterface;
 use App\Models\Credential;
 use App\Traits\ReturnMessageTrait;
 use App\Traits\ReturnModulePermissionTrait;
@@ -20,7 +23,9 @@ class CredentialController extends Controller
     use ReturnMessageTrait;
 
     public function __construct(
-        private CredentialInterface $credential,
+        // private CredentialInterface $credential,
+        private CurrentUserInterface $currentUser,
+        private ManageCredentialInterface $credential,
         private ActivityLoggerInterface $activityLogger
     ) {}
 
@@ -54,8 +59,15 @@ class CredentialController extends Controller
             ]);
         }
 
-        $credentialDTO = CredentialDTO::fromRequest($request);
-        $result = $this->credential->storeCredential($credentialDTO);
+        // $credentialDTO = CredentialDTO::fromRequest($request);
+        $manageCredentialDTO = ManageCredentialDTO::fromArray([
+            'owner_profile_id' => $this->currentUser->getProfileId(),
+            'name' => $request->input('name'),
+            'username' => $request->input('username'),
+            'secret' => $request->input('secret'),
+            'is_favorite' => false
+        ]);
+        $result = $this->credential->storeNewCredential($manageCredentialDTO);
 
         // Log the activity
         $this->activityLogger->addLog($result, $request, self::MODULE_NAME, 'store');
@@ -76,8 +88,8 @@ class CredentialController extends Controller
             ]);
         }
 
-        $credentialDTO = CredentialDTO::fromRequest($request);
-        $result = $this->credential->updateCredential($credentialDTO, $id);
+        $manageCredentialDTO = ManageCredentialDTO::fromRequest($request);
+        $result = $this->credential->updateCredential($manageCredentialDTO, $id);
 
         // Log the activity
         $this->activityLogger->addLog($result, $request, self::MODULE_NAME, 'update');

@@ -12,9 +12,9 @@ class CredentialResource extends JsonResource
 
     public static array $relations = [
         'ownerProfile',
-        'createdByProfile',
-        'updatedByProfile',
-        'deletedByProfile',
+        'createdBy',
+        'updatedBy',
+        'deletedBy',
         'credentialAccesses',
         'credentialAccesses.profile.profileUserGroup'
 
@@ -63,7 +63,7 @@ class CredentialResource extends JsonResource
      */
     private function createdByName(): ?string
     {
-        return $this->createdByProfile ? $this->createdByProfile->getFullName() : null;
+        return $this->createdBy ? $this->createdBy->getFullName() : null;
     }
 
     /**
@@ -73,7 +73,7 @@ class CredentialResource extends JsonResource
      */
     private function updatedByName(): ?string
     {
-        return $this->updatedByProfile ? $this->updatedByProfile->getFullName() : null;
+        return $this->updatedBy ? $this->updatedBy->getFullName() : null;
     }
 
     /**
@@ -83,7 +83,7 @@ class CredentialResource extends JsonResource
      */
     private function deletedByName(): ?string
     {
-        return $this->deletedByProfile ? $this->deletedByProfile->getFullName() : null;
+        return $this->deletedBy ? $this->deletedBy->getFullName() : null;
     }
 
     /**

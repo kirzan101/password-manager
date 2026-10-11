@@ -4,6 +4,7 @@ import { CBoxContent, CSearchField } from "@/Components";
 
 import AlertTransaction from "@/Components/Utilities/AlertTransaction";
 import CardList from "./Components/CardList";
+import AddCredential from "./Actions/AddCredential";
 
 const CredentialContent = ({ flash, errors, can }) => {
     const [search, setSearch] = useState("");
@@ -40,7 +41,7 @@ const CredentialContent = ({ flash, errors, can }) => {
                 >
                     <Typography variant="h4">Credentials</Typography>
 
-                    {/* <AddUserGroup
+                    <AddCredential
                         sx={{
                             display: "inline-flex",
                             ml: { xs: "auto", md: 0 },
@@ -49,7 +50,7 @@ const CredentialContent = ({ flash, errors, can }) => {
                         errors={errors}
                         can={can}
                         onSuccess={refreshTable}
-                    /> */}
+                    />
                 </Grid>
 
                 {/* Right: Search */}

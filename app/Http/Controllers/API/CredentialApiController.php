@@ -8,10 +8,14 @@ use App\Http\Resources\CredentialResource;
 use App\Interfaces\FetchInterfaces\CredentialFetchInterface;
 use Illuminate\Http\Request;
 use App\Data\ApiResponse;
+use App\Interfaces\ManageCredentialInterface;
 
 class CredentialApiController extends Controller
 {
-    public function __construct(private CredentialFetchInterface $credentialFetch) {}
+    public function __construct(
+        private CredentialFetchInterface $credentialFetch,
+        private ManageCredentialInterface $credential
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -79,5 +83,14 @@ class CredentialApiController extends Controller
             ],
             code: $code,
         );
+    }
+
+    public function reveal(int $credentialId)
+    {
+        $secret = $this->credential->revealCredentialSecret($credentialId);
+
+        return response()->json([
+            'secret' => $secret,
+        ]);
     }
 }
