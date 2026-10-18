@@ -6,7 +6,7 @@ import AlertTransaction from "@/Components/Utilities/AlertTransaction";
 import CardList from "./Components/CardList";
 import AddCredential from "./Actions/AddCredential";
 
-const CredentialContent = ({ flash, errors, can }) => {
+const CredentialContent = ({ flash, errors, can, categories }) => {
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const [refreshKey, setRefreshKey] = useState(0);
@@ -50,6 +50,7 @@ const CredentialContent = ({ flash, errors, can }) => {
                         errors={errors}
                         can={can}
                         onSuccess={refreshTable}
+                        categories={categories}
                     />
                 </Grid>
 

@@ -201,4 +201,15 @@ class Helper
     const CREDENTIAL_ACCESS_LEVEL_VIEWER = 'viewer';        // 3
     const CREDENTIAL_ACCESS_LEVEL_EDITOR = 'editor';        // 2 
     const CREDENTIAL_ACCESS_LEVEL_MODERATOR = 'moderator';  // 1 highest
+
+    const CREDENTIAL_CATEGORIES = [
+        'server',
+        'database',
+        'application',
+        'network',
+    ];
+    const CREDENTIAL_CATEGORY_SERVER = 'server';
+    const CREDENTIAL_CATEGORY_DATABASE = 'database';
+    const CREDENTIAL_CATEGORY_APPLICATION = 'application';
+    const CREDENTIAL_CATEGORY_NETWORK = 'network';
 }

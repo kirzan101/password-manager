@@ -55,7 +55,15 @@ class CredentialFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // add validation here!
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['nullable', 'string', 'max:255'],
+            'secret' => ['nullable', 'string'],
+            'category' => ['required', 'string'],
+            'properties' => ['nullable', 'array'],
+            'properties.host' => ['nullable', 'string'],
+            'properties.port' => ['nullable', 'integer'],
+            'properties.database' => ['nullable', 'string'],
+            'notes' => ['nullable', 'string'],
         ];
     }
 }

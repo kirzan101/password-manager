@@ -7,42 +7,42 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Credential extends Model
-{
-    use SoftDeletes;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'owner_profile_id',
-        'name',
-        'username',
-        'secret',
-        'category',
-        'properties',
-        'is_favorite',
-        'notes',
-        'created_by',
-        'updated_by',
-        'deleted_by'
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected function casts(): array
+    class Credential extends Model
     {
-        return [
-            'secret' => \App\Casts\EncryptedCredentialSecret::class,
-            'properties' => 'array',
-            'is_favorite' => 'boolean',
+        use SoftDeletes;
+
+        /**
+         * The attributes that are mass assignable.
+         *
+         * @var array<int, string>
+         */
+        protected $fillable = [
+            'owner_profile_id',
+            'name',
+            'username',
+            'secret',
+            'category',
+            'properties',
+            'is_favorite',
+            'notes',
+            'created_by',
+            'updated_by',
+            'deleted_by'
         ];
-    }
+
+        /**
+         * The attributes that should be cast.
+         *
+         * @var array<string, string>
+         */
+        protected function casts(): array
+        {
+            return [
+                'secret' => \App\Casts\EncryptedCredentialSecret::class,
+                'properties' => 'array',
+                'is_favorite' => 'boolean',
+            ];
+        }
 
     /**
      * The attributes that should be hidden for serialization.

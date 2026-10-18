@@ -2,7 +2,13 @@ import { useState } from "react";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-const CPasswordField = ({ id = "password", children, slotProps, ...props }) => {
+const CPasswordField = ({
+    id = "password",
+    children,
+    slotProps,
+    isReadonly = false,
+    ...props
+}) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -19,6 +25,7 @@ const CPasswordField = ({ id = "password", children, slotProps, ...props }) => {
                 ...slotProps,
                 input: {
                     ...slotProps?.input,
+                    readOnly: isReadonly,
                     endAdornment: (
                         <>
                             {slotProps?.input?.endAdornment}

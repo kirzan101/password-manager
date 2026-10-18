@@ -5,8 +5,7 @@ import {
     CSelect,
     CPasswordField,
 } from "@/Components";
-import { Grid } from "@mui/material";
-import { useState } from "react";
+import FormDatabase from "./FormDatabase";
 
 const FormCredential = ({ form, setForm, errors = {}, isReadonly = false }) => {
     const handleChange = (field) => (e) => {
@@ -54,6 +53,16 @@ const FormCredential = ({ form, setForm, errors = {}, isReadonly = false }) => {
                     isReadonly={isReadonly}
                 />
             </CFormGrid>
+
+            {form.category === "database" && (
+                <FormDatabase
+                    form={form}
+                    setForm={setForm}
+                    errors={errors}
+                    isReadonly={isReadonly}
+                />
+            )}
+
             <CFormGrid size={{ xs: 12 }}>
                 <CTextField
                     label="Notes"
