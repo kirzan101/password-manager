@@ -140,7 +140,7 @@ const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
                                     );
                                 })}
                             </ToggleButtonGroup>
-                            {errors.category && (
+                            {errors.category && !form.category && (
                                 <Box sx={{ color: "error.main", fontSize: 12 }}>
                                     {errors.category}
                                 </Box>
