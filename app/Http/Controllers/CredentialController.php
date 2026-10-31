@@ -65,8 +65,10 @@ class CredentialController extends Controller
         $manageCredentialDTO = ManageCredentialDTO::fromArray([
             'owner_profile_id' => $this->currentUser->getProfileId(),
             'name' => $request->input('name'),
-            'username' => $request->input('username'),
-            'secret' => $request->input('secret'),
+            'username' => $request->input('username') ?? '',
+            'secret' => $request->input('secret') ?? '',
+            'category' => $request->input('category'),
+            'properties' => $request->input('properties'),
             'is_favorite' => false
         ]);
         $result = $this->credential->storeNewCredential($manageCredentialDTO);
@@ -90,7 +92,19 @@ class CredentialController extends Controller
             ]);
         }
 
-        $manageCredentialDTO = ManageCredentialDTO::fromRequest($request);
+        $existing = Credential::findOrFail($id);
+
+        // A blank secret keeps the stored one
+        $manageCredentialDTO = ManageCredentialDTO::fromArray([
+            'owner_profile_id' => $existing->owner_profile_id,
+            'name' => $request->input('name'),
+            'username' => $request->input('username') ?? '',
+            'secret' => $request->input('secret') ?: $existing->secret,
+            'category' => $request->input('category'),
+            'properties' => $request->input('properties'),
+            'is_favorite' => $existing->is_favorite,
+            'created_by' => $existing->created_by,
+        ]);
         $result = $this->credential->updateCredential($manageCredentialDTO, $id);
 
         // Log the activity

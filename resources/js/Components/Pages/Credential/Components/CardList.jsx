@@ -1,5 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import axios from "@/Utilities/axios";
+import { Grid } from "@mui/material";
+import EmptyResult from "@/Components/Utilities/EmptyResult";
+import CredentialCard from "../Cards/CredentialCard";
 
 const CardList = ({
     flash,
@@ -7,6 +10,7 @@ const CardList = ({
     can,
     queryParams = {},
     initialPageSize = 10,
+    onSuccess,
 }) => {
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -125,7 +129,27 @@ const CardList = ({
         }
     };
 
-    return <div className="card-list">{JSON.stringify(rows)}</div>;
+    if (!loading && rows.length === 0) {
+        return <EmptyResult />;
+    }
+
+    return (
+        <Grid container spacing={2}>
+            {rows.map((credential) => (
+                <Grid key={credential.id} size={{ xs: 12, sm: 6, lg: 4 }}>
+                    <CredentialCard
+                        credential={credential}
+                        onCopy={copyToClipboard}
+                        onCopySecret={copySecret}
+                        copying={copyingSecretId === credential.id}
+                        can={can}
+                        errors={errors}
+                        onSuccess={fetchData}
+                    />
+                </Grid>
+            ))}
+        </Grid>
+    );
 };
 
 export default CardList;

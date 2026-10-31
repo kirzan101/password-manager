@@ -47,6 +47,7 @@ class ActivityLoggerService implements ActivityLoggerInterface
         'current_password',
         'new_password',
         'confirm_password',
+        'secret',
     ];
 
     /**

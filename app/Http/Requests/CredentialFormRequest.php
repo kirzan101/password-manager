@@ -60,9 +60,10 @@ class CredentialFormRequest extends FormRequest
             'secret' => ['nullable', 'string'],
             'category' => ['required', 'string'],
             'properties' => ['nullable', 'array'],
-            'properties.host' => ['nullable', 'string'],
-            'properties.port' => ['nullable', 'integer'],
-            'properties.database' => ['nullable', 'string'],
+            'properties.data' => ['nullable', 'array'],
+            'properties.data.*' => ['nullable', 'string', 'max:1000'],
+            'properties.showed' => ['nullable', 'array'],
+            'properties.showed.*' => ['string', 'max:255'],
             'notes' => ['nullable', 'string'],
         ];
     }

@@ -207,7 +207,9 @@ class Helper
         'database',
         'application',
         'network',
+        'account',
     ];
+    const CREDENTIAL_CATEGORY_ACCOUNT = 'account';
     const CREDENTIAL_CATEGORY_SERVER = 'server';
     const CREDENTIAL_CATEGORY_DATABASE = 'database';
     const CREDENTIAL_CATEGORY_APPLICATION = 'application';
