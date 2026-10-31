@@ -14,6 +14,7 @@ const FormCredential = ({
     setFields,
     errors = {},
     isReadonly = false,
+    secretPlaceholder,
 }) => {
     const handleChange = (field) => (e) => {
         setForm((prev) => ({
@@ -51,6 +52,7 @@ const FormCredential = ({
             <CFormGrid size={{ xs: 12 }}>
                 <CPasswordField
                     label="Secret"
+                    placeholder={secretPlaceholder}
                     id="secret"
                     name="secret"
                     value={form.secret}

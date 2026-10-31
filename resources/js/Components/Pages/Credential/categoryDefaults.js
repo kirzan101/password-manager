@@ -53,3 +53,25 @@ export const formatLabel = (key) =>
         .split("_")
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
         .join(" ");
+
+// Parse stored properties (object or JSON string) into editable rows.
+export const propertiesToFields = (properties) => {
+    let props = properties;
+    if (typeof props === "string") {
+        try {
+            props = JSON.parse(props);
+        } catch {
+            props = {};
+        }
+    }
+
+    const data = props?.data && !Array.isArray(props.data) ? props.data : {};
+    const showed = Array.isArray(props?.showed) ? props.showed : [];
+
+    return Object.entries(data).map(([key, value], i) => ({
+        id: `edit-${i}-${key}`,
+        key,
+        value: value ?? "",
+        shown: showed.includes(key),
+    }));
+};

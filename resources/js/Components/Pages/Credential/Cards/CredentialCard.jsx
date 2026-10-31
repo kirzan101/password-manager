@@ -13,14 +13,24 @@ import {
 import KeyIcon from "@mui/icons-material/Key";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { CATEGORY_ICONS } from "../categoryIcons";
-import { formatLabel } from "../categoryDefaults";
+import EditCredential from "../Actions/EditCredential";
+import { formatLabel, propertiesToFields } from "../categoryDefaults";
 
-const CredentialCard = ({ credential, onCopy, onCopySecret, copying }) => {
+const CredentialCard = ({
+    credential,
+    onCopy,
+    onCopySecret,
+    copying,
+    can,
+    errors,
+    onSuccess,
+}) => {
     const Icon = CATEGORY_ICONS[credential.category] || KeyIcon;
-    const data = credential.properties?.data || {};
-    const showed = (credential.properties?.showed || []).filter(
-        (k) => k in data,
-    );
+    const fields = propertiesToFields(credential.properties);
+    const data = Object.fromEntries(fields.map((f) => [f.key, f.value]));
+    const pinned = fields.filter((f) => f.shown).map((f) => f.key);
+    // fall back to every field when none are pinned
+    const showed = pinned.length > 0 ? pinned : fields.map((f) => f.key);
 
     return (
         <Card
@@ -155,7 +165,7 @@ const CredentialCard = ({ credential, onCopy, onCopySecret, copying }) => {
                     ) : (
                         <Box sx={{ px: 2.5, py: 3, textAlign: "center" }}>
                             <Typography variant="body2" color="text.secondary">
-                                No details pinned
+                                No details
                             </Typography>
                         </Box>
                     )}
@@ -171,6 +181,12 @@ const CredentialCard = ({ credential, onCopy, onCopySecret, copying }) => {
                         justifyContent: "flex-end",
                     }}
                 >
+                    <EditCredential
+                        credential={credential}
+                        can={can}
+                        errors={errors}
+                        onSuccess={onSuccess}
+                    />
                     <Tooltip title="Copy secret">
                         <span>
                             <IconButton

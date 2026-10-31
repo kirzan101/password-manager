@@ -10,6 +10,7 @@ const CardList = ({
     can,
     queryParams = {},
     initialPageSize = 10,
+    onSuccess,
 }) => {
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -141,6 +142,9 @@ const CardList = ({
                         onCopy={copyToClipboard}
                         onCopySecret={copySecret}
                         copying={copyingSecretId === credential.id}
+                        can={can}
+                        errors={errors}
+                        onSuccess={fetchData}
                     />
                 </Grid>
             ))}
