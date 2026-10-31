@@ -75,3 +75,24 @@ export const propertiesToFields = (properties) => {
         shown: showed.includes(key),
     }));
 };
+
+// Returns { [rowId]: { key?, value? } } for blank or duplicate entries.
+export const validateFields = (fields) => {
+    const errors = {};
+    const seen = {};
+
+    fields.forEach(({ id, key, value }) => {
+        const k = normalizeKey(key || "");
+        const rowErrors = {};
+
+        if (!k) rowErrors.key = "Field name is required";
+        else if (seen[k]) rowErrors.key = "Duplicate field name";
+        else seen[k] = true;
+
+        if (!String(value ?? "").trim()) rowErrors.value = "Value is required";
+
+        if (Object.keys(rowErrors).length) errors[id] = rowErrors;
+    });
+
+    return errors;
+};

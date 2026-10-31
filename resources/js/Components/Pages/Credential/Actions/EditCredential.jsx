@@ -5,13 +5,18 @@ import { router } from "@inertiajs/react";
 import { CModal, CButtonClose, CButtonSubmit } from "@/Components";
 
 import FormCredential from "./Forms/FormCredential";
-import { fieldsToProperties, propertiesToFields } from "../categoryDefaults";
+import {
+    fieldsToProperties,
+    propertiesToFields,
+    validateFields,
+} from "../categoryDefaults";
 
 const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
     const [open, setOpen] = useState(false);
     const [btnDisabled, setBtnDisabled] = useState(false);
     const [form, setForm] = useState({});
     const [fields, setFields] = useState([]);
+    const [fieldErrors, setFieldErrors] = useState({});
 
     const canUpdate = can.includes("update-credentials");
 
@@ -25,6 +30,7 @@ const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
             category: credential.category ?? "",
         });
         setFields(propertiesToFields(credential.properties));
+        setFieldErrors({});
         setOpen(true);
     };
 
@@ -32,6 +38,10 @@ const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        const invalid = validateFields(fields);
+        setFieldErrors(invalid);
+        if (Object.keys(invalid).length > 0) return;
 
         router.post(
             `/credentials/${credential.id}`,
@@ -80,6 +90,7 @@ const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
                         setForm={setForm}
                         fields={fields}
                         setFields={setFields}
+                        fieldErrors={fieldErrors}
                         errors={errors}
                         secretPlaceholder="Leave blank to keep current secret"
                     />

@@ -12,7 +12,11 @@ import { useState } from "react";
 import FormCredential from "./Forms/FormCredential";
 import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { CATEGORY_ICONS } from "../categoryIcons";
-import { defaultFields, fieldsToProperties } from "../categoryDefaults";
+import {
+    defaultFields,
+    fieldsToProperties,
+    validateFields,
+} from "../categoryDefaults";
 import { router } from "@inertiajs/react";
 
 const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
@@ -20,6 +24,7 @@ const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
     const [btnDisabled, setBtnDisabled] = useState(false);
 
     const [fields, setFields] = useState([]);
+    const [fieldErrors, setFieldErrors] = useState({});
     const [form, setForm] = useState({
         name: "",
         username: "",
@@ -40,37 +45,42 @@ const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
             properties: {},
         });
         setFields([]);
+        setFieldErrors({});
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        const invalid = validateFields(fields);
+        setFieldErrors(invalid);
+        if (Object.keys(invalid).length > 0) return;
 
         // submission here
         router.post(
             "/credentials",
             { ...form, properties: fieldsToProperties(fields) },
             {
-            forceFormData: true,
-            onSuccess: ({ props }) => {
-                setOpen(false);
+                forceFormData: true,
+                onSuccess: ({ props }) => {
+                    setOpen(false);
 
-                // reset form value
-                handleResetForm();
+                    // reset form value
+                    handleResetForm();
 
-                // call onSuccess callback if provided
-                onSuccess?.();
+                    // call onSuccess callback if provided
+                    onSuccess?.();
+                },
+                onError: () => {
+                    // emits("notification", "Some fields has an error.", "error");
+                    // add snackbar here
+                },
+                onBefore: () => {
+                    setBtnDisabled(true);
+                },
+                onFinish: () => {
+                    setBtnDisabled(false);
+                },
             },
-            onError: () => {
-                // emits("notification", "Some fields has an error.", "error");
-                // add snackbar here
-            },
-            onBefore: () => {
-                setBtnDisabled(true);
-            },
-            onFinish: () => {
-                setBtnDisabled(false);
-            },
-        },
         );
     };
 
@@ -81,6 +91,7 @@ const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
 
         setForm((prev) => ({ ...prev, category }));
         setFields(defaultFields(category));
+        setFieldErrors({});
     };
 
     return (
@@ -142,6 +153,7 @@ const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
                         setForm={setForm}
                         fields={fields}
                         setFields={setFields}
+                        fieldErrors={fieldErrors}
                         errors={errors}
                         isReadonly={false}
                         categories={categories}

@@ -13,7 +13,12 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
-const FormProperties = ({ fields, setFields, errors = {} }) => {
+const FormProperties = ({
+    fields,
+    setFields,
+    errors = {},
+    fieldErrors = {},
+}) => {
     const update = (id, patch) =>
         setFields((prev) =>
             prev.map((f) => (f.id === id ? { ...f, ...patch } : f)),
@@ -68,6 +73,8 @@ const FormProperties = ({ fields, setFields, errors = {} }) => {
                         <TextField
                             size="small"
                             label="Field"
+                            error={!!fieldErrors[field.id]?.key}
+                            helperText={fieldErrors[field.id]?.key}
                             value={field.key}
                             onChange={(e) =>
                                 update(field.id, { key: e.target.value })
@@ -81,8 +88,14 @@ const FormProperties = ({ fields, setFields, errors = {} }) => {
                             onChange={(e) =>
                                 update(field.id, { value: e.target.value })
                             }
-                            error={!!errors[`properties.data.${field.key}`]}
-                            helperText={errors[`properties.data.${field.key}`]}
+                            error={
+                                !!fieldErrors[field.id]?.value ||
+                                !!errors[`properties.data.${field.key}`]
+                            }
+                            helperText={
+                                fieldErrors[field.id]?.value ||
+                                errors[`properties.data.${field.key}`]
+                            }
                             sx={{ flex: 1 }}
                         />
                         <Tooltip

@@ -12,6 +12,7 @@ const FormCredential = ({
     setForm,
     fields,
     setFields,
+    fieldErrors,
     errors = {},
     isReadonly = false,
     secretPlaceholder,
@@ -68,6 +69,7 @@ const FormCredential = ({
                     <FormProperties
                         fields={fields}
                         setFields={setFields}
+                        fieldErrors={fieldErrors}
                         errors={errors}
                     />
                 </CFormGrid>
