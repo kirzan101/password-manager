@@ -14,6 +14,7 @@ import KeyIcon from "@mui/icons-material/Key";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { CATEGORY_ICONS } from "../categoryIcons";
 import EditCredential from "../Actions/EditCredential";
+import ShareCredential from "../Share/ShareCredential";
 import { formatLabel, propertiesToFields } from "../categoryDefaults";
 
 const CredentialCard = ({
@@ -119,6 +120,9 @@ const CredentialCard = ({
                             errors={errors}
                             onSuccess={onSuccess}
                         />
+                        {/* TODO: pass accesses/profiles/userGroups and the
+                            onShare/onChangeLevel/onRevoke handlers */}
+                        <ShareCredential credential={credential} />
                     </Stack>
                 </Box>
 
