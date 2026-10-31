@@ -82,7 +82,13 @@ const CredentialContent = ({ flash, errors, can, categories }) => {
             {/* Display flash messages if they exist */}
             {flash?.error && <AlertTransaction flash={flash} />}
 
-            <CardList flash={flash} can={can} errors={errors} />
+            <CardList
+                key={refreshKey}
+                flash={flash}
+                can={can}
+                errors={errors}
+                queryParams={debouncedSearch ? { search: debouncedSearch } : {}}
+            />
         </CBoxContent>
     );
 };

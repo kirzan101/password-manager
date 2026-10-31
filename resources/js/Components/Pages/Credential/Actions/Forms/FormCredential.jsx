@@ -5,9 +5,16 @@ import {
     CSelect,
     CPasswordField,
 } from "@/Components";
-import FormDatabase from "./FormDatabase";
+import FormProperties from "./FormProperties";
 
-const FormCredential = ({ form, setForm, errors = {}, isReadonly = false }) => {
+const FormCredential = ({
+    form,
+    setForm,
+    fields,
+    setFields,
+    errors = {},
+    isReadonly = false,
+}) => {
     const handleChange = (field) => (e) => {
         setForm((prev) => ({
             ...prev,
@@ -54,13 +61,14 @@ const FormCredential = ({ form, setForm, errors = {}, isReadonly = false }) => {
                 />
             </CFormGrid>
 
-            {form.category === "database" && (
-                <FormDatabase
-                    form={form}
-                    setForm={setForm}
-                    errors={errors}
-                    isReadonly={isReadonly}
-                />
+            {form.category && (
+                <CFormGrid size={{ xs: 12 }}>
+                    <FormProperties
+                        fields={fields}
+                        setFields={setFields}
+                        errors={errors}
+                    />
+                </CFormGrid>
             )}
 
             <CFormGrid size={{ xs: 12 }}>

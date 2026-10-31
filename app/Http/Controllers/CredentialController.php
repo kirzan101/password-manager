@@ -67,6 +67,8 @@ class CredentialController extends Controller
             'name' => $request->input('name'),
             'username' => $request->input('username'),
             'secret' => $request->input('secret'),
+            'category' => $request->input('category'),
+            'properties' => $request->input('properties'),
             'is_favorite' => false
         ]);
         $result = $this->credential->storeNewCredential($manageCredentialDTO);
