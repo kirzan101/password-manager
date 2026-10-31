@@ -16,6 +16,7 @@ import {
     defaultFields,
     fieldsToProperties,
     validateFields,
+    validateMain,
 } from "../categoryDefaults";
 import { router } from "@inertiajs/react";
 
@@ -25,6 +26,7 @@ const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
 
     const [fields, setFields] = useState([]);
     const [fieldErrors, setFieldErrors] = useState({});
+    const [mainErrors, setMainErrors] = useState({});
     const [form, setForm] = useState({
         name: "",
         username: "",
@@ -46,14 +48,21 @@ const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
         });
         setFields([]);
         setFieldErrors({});
+        setMainErrors({});
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         const invalid = validateFields(fields);
+        const invalidMain = validateMain(form);
         setFieldErrors(invalid);
-        if (Object.keys(invalid).length > 0) return;
+        setMainErrors(invalidMain);
+        if (
+            Object.keys(invalid).length > 0 ||
+            Object.keys(invalidMain).length > 0
+        )
+            return;
 
         // submission here
         router.post(
@@ -90,6 +99,7 @@ const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
         if (!category) return;
 
         setForm((prev) => ({ ...prev, category }));
+        setMainErrors((prev) => ({ ...prev, category: undefined }));
         setFields(defaultFields(category));
         setFieldErrors({});
     };
@@ -140,9 +150,10 @@ const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
                                     );
                                 })}
                             </ToggleButtonGroup>
-                            {errors.category && !form.category && (
+                            {(mainErrors.category ||
+                                (errors.category && !form.category)) && (
                                 <Box sx={{ color: "error.main", fontSize: 12 }}>
-                                    {errors.category}
+                                    {mainErrors.category || errors.category}
                                 </Box>
                             )}
                         </CFormGrid>
@@ -154,7 +165,7 @@ const AddCredential = ({ flash, errors, can, sx, onSuccess, categories }) => {
                         fields={fields}
                         setFields={setFields}
                         fieldErrors={fieldErrors}
-                        errors={errors}
+                        errors={{ ...errors, ...mainErrors }}
                         isReadonly={false}
                         categories={categories}
                     />

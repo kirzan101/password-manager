@@ -9,6 +9,7 @@ import {
     fieldsToProperties,
     propertiesToFields,
     validateFields,
+    validateMain,
 } from "../categoryDefaults";
 
 const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
@@ -17,6 +18,7 @@ const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
     const [form, setForm] = useState({});
     const [fields, setFields] = useState([]);
     const [fieldErrors, setFieldErrors] = useState({});
+    const [mainErrors, setMainErrors] = useState({});
 
     const canUpdate = can.includes("update-credentials");
 
@@ -31,6 +33,7 @@ const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
         });
         setFields(propertiesToFields(credential.properties));
         setFieldErrors({});
+        setMainErrors({});
         setOpen(true);
     };
 
@@ -40,8 +43,14 @@ const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
         event.preventDefault();
 
         const invalid = validateFields(fields);
+        const invalidMain = validateMain(form);
         setFieldErrors(invalid);
-        if (Object.keys(invalid).length > 0) return;
+        setMainErrors(invalidMain);
+        if (
+            Object.keys(invalid).length > 0 ||
+            Object.keys(invalidMain).length > 0
+        )
+            return;
 
         router.post(
             `/credentials/${credential.id}`,
@@ -91,7 +100,7 @@ const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
                         fields={fields}
                         setFields={setFields}
                         fieldErrors={fieldErrors}
-                        errors={errors}
+                        errors={{ ...errors, ...mainErrors }}
                         secretPlaceholder="Leave blank to keep current secret"
                     />
                     <Box

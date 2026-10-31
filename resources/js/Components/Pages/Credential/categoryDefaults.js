@@ -96,3 +96,11 @@ export const validateFields = (fields) => {
 
     return errors;
 };
+
+// Mirrors the server rules for the main credential fields.
+export const validateMain = (form) => {
+    const errors = {};
+    if (!String(form.name ?? "").trim()) errors.name = "Name is required";
+    if (!form.category) errors.category = "Category is required";
+    return errors;
+};
