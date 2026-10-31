@@ -14,9 +14,9 @@ const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
     const [fields, setFields] = useState([]);
 
     const canUpdate = can.includes("update-credentials");
-    if (!canUpdate) return null;
 
     const handleOpen = () => {
+        if (!canUpdate) return;
         setForm({
             name: credential.name ?? "",
             username: credential.username ?? "",
@@ -53,10 +53,18 @@ const EditCredential = ({ credential, errors = {}, can = [], onSuccess }) => {
 
     return (
         <>
-            <Tooltip title="Edit">
-                <IconButton size="small" onClick={handleOpen}>
-                    <EditOutlinedIcon fontSize="small" />
-                </IconButton>
+            <Tooltip
+                title={canUpdate ? "Edit" : "You can't edit this credential"}
+            >
+                <span>
+                    <IconButton
+                        size="small"
+                        disabled={!canUpdate}
+                        onClick={handleOpen}
+                    >
+                        <EditOutlinedIcon fontSize="small" />
+                    </IconButton>
+                </span>
             </Tooltip>
 
             <CModal

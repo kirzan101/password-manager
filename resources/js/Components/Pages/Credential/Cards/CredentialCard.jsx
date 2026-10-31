@@ -100,11 +100,26 @@ const CredentialCard = ({
                         </Box>
                     </Stack>
 
-                    <Chip
-                        size="small"
-                        label={credential.category || "uncategorized"}
-                        sx={{ textTransform: "capitalize", fontWeight: 600 }}
-                    />
+                    <Stack
+                        direction="row"
+                        spacing={0.5}
+                        sx={{ alignItems: "center", flexShrink: 0 }}
+                    >
+                        <Chip
+                            size="small"
+                            label={credential.category || "uncategorized"}
+                            sx={{
+                                textTransform: "capitalize",
+                                fontWeight: 600,
+                            }}
+                        />
+                        <EditCredential
+                            credential={credential}
+                            can={can}
+                            errors={errors}
+                            onSuccess={onSuccess}
+                        />
+                    </Stack>
                 </Box>
 
                 <Divider />
@@ -181,12 +196,6 @@ const CredentialCard = ({
                         justifyContent: "flex-end",
                     }}
                 >
-                    <EditCredential
-                        credential={credential}
-                        can={can}
-                        errors={errors}
-                        onSuccess={onSuccess}
-                    />
                     <Tooltip title="Copy secret">
                         <span>
                             <IconButton
